@@ -1,0 +1,22 @@
+{
+  "name": "ejercicios-semanales",
+  "version": "1.0.0",
+  "description": "Ejercicios semanales del curso de nodejs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "start:dev": "nodemon server.js"
+  },
+  "author": "Brandon Leal",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.19.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
