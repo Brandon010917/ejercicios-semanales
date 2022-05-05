@@ -11,10 +11,17 @@ const {
 
 // Middlewares
 const { userExists } = require("../middlewares/users.middlewares");
+const {
+  createUserValidations,
+  validateResult,
+} = require("../middlewares/validations.middleware");
 
 const router = express.Router();
 
-router.route("/").get(getAllUsers).post(createNewUser);
+router
+  .route("/")
+  .get(getAllUsers)
+  .post(createUserValidations, validateResult, createNewUser);
 
 router
   .use("/:id", userExists)

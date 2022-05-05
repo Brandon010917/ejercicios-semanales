@@ -1,30 +1,26 @@
 // Models
 const { User } = require("../models/user.model");
 
-const userExists = async (req, res, next) => {
-  try {
-    const { id } = req.params;
+// Utils
+const { AppError } = require("../utils/appError");
+const { catchAsync } = require("../utils/catchAsync");
 
-    const user = await User.findOne({
-      where: {
-        id,
-        status: "available",
-      },
-    });
+const userExists = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
 
-    if (!user) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found given that id",
-      });
-    }
+  const user = await User.findOne({
+    where: {
+      id,
+    },
+  });
 
-    req.user = user;
-
-    next();
-  } catch (error) {
-    console.log(error);
+  if (!user) {
+    return next(new AppError(404, "Can't find user with the given id"));
   }
-};
+
+  req.user = user;
+
+  next();
+});
 
 module.exports = { userExists };

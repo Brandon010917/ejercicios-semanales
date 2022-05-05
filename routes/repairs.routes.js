@@ -11,10 +11,17 @@ const {
 
 // Middlewares
 const { repairExists } = require("../middlewares/repairs.middlewares");
+const {
+  createRepairValidations,
+  validateResult,
+} = require("../middlewares/validations.middleware");
 
 const router = express.Router();
 
-router.route("/").get(getAllRepairs).post(createNewRepair);
+router
+  .route("/")
+  .get(getAllRepairs)
+  .post(createRepairValidations, validateResult, createNewRepair);
 
 router
   .use("/:id", repairExists)

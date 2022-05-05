@@ -14,6 +14,14 @@ const Repair = sequelize.define("repair", {
     type: DataTypes.DATEONLY,
     allowNull: false,
   },
+  computerNumber: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  comments: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,

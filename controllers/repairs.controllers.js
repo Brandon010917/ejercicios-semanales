@@ -1,5 +1,6 @@
 // Models
 const { Repair } = require("../models/repair.model");
+const { User } = require("../models/user.model");
 
 const getAllRepairs = async (req, res) => {
   try {
@@ -7,6 +8,7 @@ const getAllRepairs = async (req, res) => {
       where: {
         status: "pending",
       },
+      include: [{ model: User }],
     });
 
     res.status(200).json({
@@ -19,10 +21,12 @@ const getAllRepairs = async (req, res) => {
 
 const createNewRepair = async (req, res) => {
   try {
-    const { date, userId } = req.body;
+    const { date, computerNumber, comments, userId } = req.body;
 
     const newRepair = await Repair.create({
       date,
+      computerNumber,
+      comments,
       userId,
     });
 
