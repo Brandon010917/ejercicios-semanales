@@ -8,7 +8,7 @@ const createUserValidations = [
     .notEmpty()
     .withMessage("Name is required")
     .isString()
-    .withMessage("Username must be a string"),
+    .withMessage("Name must be a string"),
   body("email")
     .notEmpty()
     .withMessage("Email is required")
@@ -21,6 +21,15 @@ const createUserValidations = [
     .withMessage("Password is required")
     .isString()
     .withMessage("Password must be a string"),
+  body("role")
+    .notEmpty()
+    .withMessage("Role is required")
+    .isString()
+    .withMessage("Role must be a string")
+    .custom(
+      (value) => value === "admin" || value === "client" || value === "employee"
+    )
+    .withMessage("Role must be client or employee"),
 ];
 // End user validations
 

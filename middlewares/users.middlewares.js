@@ -11,6 +11,10 @@ const userExists = catchAsync(async (req, res, next) => {
   const user = await User.findOne({
     where: {
       id,
+      status: "available",
+    },
+    attributes: {
+      exclude: ["password"],
     },
   });
 
@@ -23,4 +27,17 @@ const userExists = catchAsync(async (req, res, next) => {
   next();
 });
 
-module.exports = { userExists };
+const protectAccountOwner = catchAsync(async (req, res, next) => {
+  const { currentUser } = req;
+  const { id } = req.params;
+
+  if (currentUser.id !== +id) {
+    return next(
+      new AppError(404, "You can't update or delete other users accounts")
+    );
+  }
+
+  next();
+});
+
+module.exports = { userExists, protectAccountOwner };

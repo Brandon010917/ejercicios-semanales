@@ -7,28 +7,36 @@ const {
   getUserById,
   updateUser,
   deleteUser,
+  loginUser,
 } = require("../controllers/users.controllers");
 
 // Middlewares
-const { userExists } = require("../middlewares/users.middlewares");
+const { validateSession } = require("../middlewares/auth.middlewares");
+const {
+  userExists,
+  protectAccountOwner,
+} = require("../middlewares/users.middlewares");
 const {
   createUserValidations,
   validateResult,
-} = require("../middlewares/validations.middleware");
+} = require("../middlewares/validations.middlewares");
 
 const router = express.Router();
 
-router
-  .route("/")
-  .get(getAllUsers)
-  .post(createUserValidations, validateResult, createNewUser);
+router.post("/", createUserValidations, validateResult, createNewUser);
+
+router.post("/login", loginUser);
+
+router.use(validateSession);
+
+router.get("/", getAllUsers);
 
 router
   .use("/:id", userExists)
   .route("/:id")
   .get(getUserById)
-  .patch(updateUser)
-  .delete(deleteUser);
+  .patch(protectAccountOwner, updateUser)
+  .delete(protectAccountOwner, deleteUser);
 
 module.exports = {
   usersRouter: router,

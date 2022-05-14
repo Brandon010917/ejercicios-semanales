@@ -17,6 +17,9 @@ const repairExists = catchAsync(async (req, res, next) => {
     include: [
       {
         model: User,
+        attributes: {
+          exclude: ["password"],
+        },
       },
     ],
   });

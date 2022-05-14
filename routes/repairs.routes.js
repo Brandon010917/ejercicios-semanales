@@ -10,18 +10,25 @@ const {
 } = require("../controllers/repairs.controllers");
 
 // Middlewares
+const {
+  validateSession,
+  protectedEmployee,
+} = require("../middlewares/auth.middlewares");
 const { repairExists } = require("../middlewares/repairs.middlewares");
 const {
   createRepairValidations,
   validateResult,
-} = require("../middlewares/validations.middleware");
+} = require("../middlewares/validations.middlewares");
 
 const router = express.Router();
 
-router
-  .route("/")
-  .get(getAllRepairs)
-  .post(createRepairValidations, validateResult, createNewRepair);
+router.use(validateSession);
+
+router.post("/", createRepairValidations, validateResult, createNewRepair);
+
+router.use(protectedEmployee);
+
+router.get("/", getAllRepairs);
 
 router
   .use("/:id", repairExists)
